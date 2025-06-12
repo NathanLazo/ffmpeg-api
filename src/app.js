@@ -25,9 +25,14 @@ app.use(compression());
 
 // Configuración de CORS
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://debor.ai"],
+  origin: [
+    "http://localhost:3000",
+    "https://debor.ai",
+    "http://debor-ai-api-4rremg-ce3bf2-31-220-17-216.traefik.me:3000",
+  ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
