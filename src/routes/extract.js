@@ -46,7 +46,12 @@ function extract(req, res, next) {
   }
   if (extract === "audio") {
     format = "mp3";
-    ffmpegParams.outputOptions = ["-vn", "-acodec libmp3lame", "-q:a 2"];
+    ffmpegParams.outputOptions = [
+      "-vn",
+      "-acodec libmp3lame",
+      "-q:a 2",
+      "-f mp3",
+    ];
     let monoAudio = req.query.mono || "yes";
     if (monoAudio === "yes" || monoAudio === "true") {
       logger.debug("extracting audio, 1 channel only");
@@ -79,16 +84,17 @@ function extract(req, res, next) {
 
   //extract audio track from video as wav
   if (extract === "audio") {
-    let wavFile = `${outputFile}.${format}`;
+    let audioFile = `${outputFile}.mp3`;
     ffmpegCommand
       .format("mp3")
+      .outputOptions(["-f mp3"])
       .on("end", function () {
         logger.debug(`ffmpeg process ended`);
 
         utils.deleteFile(savedFile);
-        return utils.downloadFile(wavFile, null, req, res, next);
+        return utils.downloadFile(audioFile, null, req, res, next);
       })
-      .save(wavFile);
+      .save(audioFile);
   }
 
   //extract png images from video
