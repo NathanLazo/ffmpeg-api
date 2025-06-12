@@ -25,14 +25,32 @@ app.use(compression());
 
 // Configuración de CORS
 const corsOptions = {
-  origin: [
-    "http://localhost:3000",
-    "https://debor.ai",
-    "http://debor-ai-api-4rremg-ce3bf2-31-220-17-216.traefik.me:3000",
-  ],
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "http://localhost:3000",
+      "https://debor.ai",
+      "http://debor-ai-api-4rremg-ce3bf2-31-220-17-216.traefik.me:3000",
+    ];
+    // Permitir solicitudes sin origen (como aplicaciones móviles o curl)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Accept",
+  ],
+  exposedHeaders: ["Content-Length", "Content-Type"],
   credentials: true,
+  maxAge: 86400, // 24 horas
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
