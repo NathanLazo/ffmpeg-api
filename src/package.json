@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "API for FFMPEG, media conversion utility",
   "main": "app.js",
-  "bin" : { "ffmpegapi" : "./app.js" },
+  "bin": {
+    "ffmpegapi": "./app.js"
+  },
   "license": "ISC",
   "dependencies": {
     "busboy": "~0.3.1",
@@ -15,7 +17,8 @@
     "fs": "0.0.1-security",
     "unique-filename": "^1.1.1",
     "winston": "^3.2.1",
-    "archiver": "^4.0.1"
+    "archiver": "^4.0.1",
+    "cors": "^2.8.5"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
