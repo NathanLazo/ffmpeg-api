@@ -27,8 +27,8 @@ app.use(compression());
 const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
-      "http://localhost:3000",
       "https://debor.ai",
+      "https://www.debor.ai",
       "http://debor-ai-api-4rremg-ce3bf2-31-220-17-216.traefik.me:3000",
       "https://ffmpeg.debor.ai",
     ];
