@@ -31,6 +31,7 @@ const corsOptions = {
       "https://www.debor.ai",
       "http://debor-ai-api-4rremg-ce3bf2-31-220-17-216.traefik.me:3000",
       "https://ffmpeg.debor.ai",
+      "http://localhost:3000",
     ];
     // Permitir solicitudes sin origen (como aplicaciones móviles o curl)
     if (!origin) return callback(null, true);
