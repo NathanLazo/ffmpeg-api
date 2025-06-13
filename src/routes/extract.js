@@ -82,7 +82,7 @@ function extract(req, res, next) {
     let audioFile = `${outputFile}.mp3`;
     ffmpegCommand
       .format("mp3")
-      .outputOptions(["-f mp3"])
+      .outputOptions(ffmpegParams.outputOptions)
       .on("end", function () {
         logger.debug(`ffmpeg process ended`);
 
