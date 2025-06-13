@@ -60,6 +60,20 @@ function extract(req, res, next) {
 
   let savedFile = res.locals.savedFile;
 
+  // Verificar que el archivo existe y tiene contenido
+  if (!fs.existsSync(savedFile)) {
+    logger.error(`El archivo de entrada no existe: ${savedFile}`);
+    return res.status(400).json({ error: "El archivo de entrada no existe" });
+  }
+
+  const stats = fs.statSync(savedFile);
+  logger.debug(`Tamaño del archivo de entrada: ${stats.size} bytes`);
+
+  if (stats.size === 0) {
+    logger.error(`El archivo de entrada está vacío: ${savedFile}`);
+    return res.status(400).json({ error: "El archivo de entrada está vacío" });
+  }
+
   var outputFile = uniqueFilename("/tmp/");
   logger.debug(`outputFile ${outputFile}`);
   var uniqueFileNamePrefix = outputFile.replace("/tmp/", "");
@@ -70,6 +84,12 @@ function extract(req, res, next) {
   ffmpegCommand = ffmpegCommand
     .renice(constants.defaultFFMPEGProcessPriority)
     .outputOptions(ffmpegParams.outputOptions)
+    .on("start", function (commandLine) {
+      logger.debug(`FFmpeg iniciado con comando: ${commandLine}`);
+    })
+    .on("progress", function (progress) {
+      logger.debug(`Progreso FFmpeg: ${JSON.stringify(progress)}`);
+    })
     .on("error", function (err) {
       logger.error(`${err}`);
       utils.deleteFile(savedFile);
