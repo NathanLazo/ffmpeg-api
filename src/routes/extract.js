@@ -86,15 +86,21 @@ function extract(req, res, next) {
   if (extract === "audio") {
     let audioFile = `${outputFile}.mp3`;
     ffmpegCommand
+      .on("start", commandLine => {
+          logger.debug("FFmpeg started: " + commandLine);
+      })
       .format("mp3")
-      .outputOptions(["-f mp3"])
+      .on("stderr", function(stderrLine) {
+          logger.debug("FFmpeg stderr: " + stderrLine);
+      })
       .on("end", function () {
         logger.debug(`ffmpeg process ended`);
 
         utils.deleteFile(savedFile);
         return utils.downloadFile(audioFile, null, req, res, next);
       })
-      .save(audioFile);
+      .output(audioFile)
+      .run();
   }
 
   //extract png images from video
