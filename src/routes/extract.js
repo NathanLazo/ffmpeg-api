@@ -101,8 +101,6 @@ function extract(req, res, next) {
   if (extract === "audio") {
     let audioFile = `${outputFile}.mp3`;
     ffmpegCommand
-      .format("mp3")
-      .outputOptions(ffmpegParams.outputOptions)
       .on("end", function () {
         logger.debug(`ffmpeg process ended`);
 
