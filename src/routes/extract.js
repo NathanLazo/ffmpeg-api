@@ -46,19 +46,8 @@ function extract(req, res, next) {
   }
   if (extract === "audio") {
     format = "mp3";
-    ffmpegParams.outputOptions = [
-      "-vn",
-      "-acodec libmp3lame",
-      "-q:a 2",
-      "-f mp3",
-    ];
-    let monoAudio = req.query.mono || "yes";
-    if (monoAudio === "yes" || monoAudio === "true") {
-      logger.debug("extracting audio, 1 channel only");
-      ffmpegParams.outputOptions.push("-ac 1");
-    } else {
-      logger.debug("extracting audio, all channels");
-    }
+    ffmpegParams.outputOptions = ["-ac 1", "-codec:a libmp3lame", "-b:a 48k"];
+    logger.debug("extracting audio, 1 channel only");
   }
 
   ffmpegParams.extension = format;
@@ -87,7 +76,6 @@ function extract(req, res, next) {
     let audioFile = `${outputFile}.mp3`;
     ffmpegCommand
       .format("mp3")
-      .outputOptions(["-f mp3"])
       .on("end", function () {
         logger.debug(`ffmpeg process ended`);
 
