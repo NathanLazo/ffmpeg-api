@@ -8,7 +8,7 @@ const logger = require("./utils/logger.js");
 const constants = require("./constants.js");
 
 fileSizeLimit = constants.fileSizeLimit;
-timeout = 3600000;
+timeout = 7200000;
 
 // catch SIGINT and SIGTERM and exit
 // Using a single function to handle multiple signals
