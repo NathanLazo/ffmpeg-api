@@ -45,8 +45,8 @@ function extract(req, res, next) {
     ffmpegParams.outputOptions = [`-vf fps=${fps}`];
   }
   if (extract === "audio") {
-    format = "mp3";
-    ffmpegParams.outputOptions = ["-vn", "-acodec libmp3lame", "-q:a 2"];
+    format = "wav";
+    ffmpegParams.outputOptions = ["-vn", `-f ${format}`];
     let monoAudio = req.query.mono || "yes";
     if (monoAudio === "yes" || monoAudio === "true") {
       logger.debug("extracting audio, 1 channel only");
